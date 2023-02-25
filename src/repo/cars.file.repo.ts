@@ -3,10 +3,12 @@ import { Car } from '../models/cars';
 const file = './data/data.json';
 
 export class CarsFileRepo {
-  read() {
-    return fs.readFile(file, 'utf-8').then((data) => JSON.parse(data) as Car[]);
+  read(): Promise<Car[]> {
+    return fs.readFile(file, 'utf-8').then((data) => JSON.parse(data));
   }
-  write() {}
+  write(): Promise<Car[]> {
+    return fs.readFile(file, 'utf-8').then((data) => JSON.parse(data));
+  }
   update() {}
   delete() {}
 }
