@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import { carsRouter } from './router/cars.js';
 
 export const app = express();
 const corsOptions = {
@@ -12,7 +13,4 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.disable('x-powered-by');
 
-app.use((_req, _resp, next) => {
-  console.log('Soy un middleware');
-  next();
-});
+app.use('/cars', carsRouter);
