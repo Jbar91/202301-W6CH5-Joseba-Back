@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Car } from '../models/cars.js';
 import { CarsFileRepo } from '../repo/cars.file.repo.js';
 
 export class CarsController {
@@ -12,19 +11,23 @@ export class CarsController {
     });
   }
   get(req: Request, resp: Response) {
-    this.repo.read().then((data) => {
-      const id = req.params.id;
-      const car = data.find((item) => item.id === Number(id));
-      resp.json(car);
+    const id = Number(req.params.id);
+
+    this.repo.readById(id).then((data) => {
+      resp.json(data);
     });
   }
   post(req: Request, resp: Response) {
-    this.repo.write().then((data) => {
-      const newCar: Car = req.body;
-      const updated = [...data, newCar];
-      resp.json(updated);
+    this.repo.write(req.body).then((data) => {
+      resp.json(data);
     });
   }
-  patch(req: Request, resp: Response) {}
-  delete(req: Request, resp: Response) {}
+  patch(req: Request, resp: Response) {
+    const id = Number(req.params.id);
+    this.repo.update(id, req.body).then((data) => resp.json(data));
+  }
+  delete(req: Request, resp: Response) {
+    const id = Number(req.params.id);
+    this.repo.delete(id).then((data) => resp.json(data));
+  }
 }
