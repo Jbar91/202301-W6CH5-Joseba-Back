@@ -1,33 +1,51 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { CarsFileRepo } from '../repository/cars.file.repo.js';
 
 export class CarsController {
   constructor(public repo: CarsFileRepo) {
     this.repo = repo;
   }
-  getAll(req: Request, resp: Response) {
-    this.repo.read().then((data) => {
+  async getAll(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const data = await this.repo.read();
       resp.json(data);
-    });
+    } catch (error) {
+      next(error);
+    }
   }
-  get(req: Request, resp: Response) {
+  async get(req: Request, resp: Response, next: NextFunction) {
     const id = Number(req.params.id);
-
-    this.repo.readById(id).then((data) => {
+    try {
+      const data = await this.repo.readById(id);
       resp.json(data);
-    });
+    } catch (error) {
+      next(error);
+    }
   }
-  post(req: Request, resp: Response) {
-    this.repo.write(req.body).then((data) => {
+  async post(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const data = await this.repo.write(req.body);
       resp.json(data);
-    });
+    } catch (error) {
+      next(error);
+    }
   }
-  patch(req: Request, resp: Response) {
-    const id = Number(req.params.id);
-    this.repo.update(id, req.body).then((data) => resp.json(data));
+  async patch(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const id = Number(req.params.id);
+      const data = await this.repo.update(id, req.body);
+      resp.json(data);
+    } catch (error) {
+      next(error);
+    }
   }
-  delete(req: Request, resp: Response) {
-    const id = Number(req.params.id);
-    this.repo.delete(id).then((data) => resp.json(data));
+  async delete(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const id = Number(req.params.id);
+      const data = await this.repo.delete(id);
+      resp.json(data);
+    } catch (error) {
+      next(error);
+    }
   }
 }
