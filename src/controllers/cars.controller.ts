@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CarsFileRepo } from '../repo/cars.file.repo.js';
+import { CarsFileRepo } from '../repository/cars.file.repo.js';
 
 export class CarsController {
   constructor(public repo: CarsFileRepo) {

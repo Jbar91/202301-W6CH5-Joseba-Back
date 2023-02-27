@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { CarsController } from '../controllers/cars.js';
-import { CarsFileRepo } from '../repo/cars.file.repo.js';
+import { CarsController } from '../controllers/cars.controller.js';
+import { CarsFileRepo } from '../repository/cars.file.repo.js';
 
 export const carsRouter = Router();
 const repo = new CarsFileRepo();
