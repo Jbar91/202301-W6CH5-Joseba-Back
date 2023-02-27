@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import { Car } from '../models/cars';
-import { response } from 'express';
 const file = './data/data.json';
 
 export class CarsFileRepo {
