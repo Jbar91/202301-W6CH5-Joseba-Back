@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { CarsController } from '../controllers/cars.controller.js';
-import { CarsFileRepo } from '../repository/cars.file.repo.js';
+import { CarsMongoRepo } from '../repository/cars.mongo.repo.js';
 
 export const carsRouter = Router();
-const repo = new CarsFileRepo();
+const repo = new CarsMongoRepo();
 const controller = new CarsController(repo);
 
 carsRouter.get('/', controller.getAll.bind(controller));
