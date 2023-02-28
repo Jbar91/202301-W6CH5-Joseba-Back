@@ -1,49 +1,68 @@
 import { Request, Response, NextFunction } from 'express';
-import { CarsFileRepo } from '../repository/cars.file.repo.js';
+import createDebug from 'debug';
+import { Car } from '../entities/cars.js';
+import { Repo } from '../repository/repository.interface.js';
+
+const debug = createDebug('CP:controller');
 
 export class CarsController {
-  constructor(public repo: CarsFileRepo) {
+  constructor(public repo: Repo<Car>) {
     this.repo = repo;
+    debug('Instantiated');
   }
   async getAll(req: Request, resp: Response, next: NextFunction) {
     try {
-      const data = await this.repo.read();
-      resp.json(data);
+      debug('getAll method');
+      const data = await this.repo.query();
+      resp.json({
+        results: [data],
+      });
     } catch (error) {
       next(error);
     }
   }
   async get(req: Request, resp: Response, next: NextFunction) {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     try {
-      const data = await this.repo.readById(id);
-      resp.json(data);
+      debug('get method');
+      const data = await this.repo.queryId(id);
+      resp.json({
+        results: [data],
+      });
     } catch (error) {
       next(error);
     }
   }
   async post(req: Request, resp: Response, next: NextFunction) {
     try {
-      const data = await this.repo.write(req.body);
-      resp.json(data);
+      debug('post method');
+      const data = await this.repo.create(req.body);
+      resp.json({
+        results: [data],
+      });
     } catch (error) {
       next(error);
     }
   }
   async patch(req: Request, resp: Response, next: NextFunction) {
     try {
-      const id = Number(req.params.id);
-      const data = await this.repo.update(id, req.body);
-      resp.json(data);
+      debug('patch method');
+      const data = await this.repo.update(req.body);
+      resp.json({
+        results: [data],
+      });
     } catch (error) {
       next(error);
     }
   }
   async delete(req: Request, resp: Response, next: NextFunction) {
     try {
-      const id = Number(req.params.id);
+      debug('delete');
+      const id = req.params.id;
       const data = await this.repo.delete(id);
-      resp.json(data);
+      resp.json({
+        results: [data],
+      });
     } catch (error) {
       next(error);
     }

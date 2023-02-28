@@ -1,12 +1,12 @@
 import { Response, Request, NextFunction } from 'express';
-import { CarsFileRepo } from '../repository/cars.file.repo';
-import { CarsController } from './cars.controller';
+import { CarsMongoRepo } from '../repository/cars.mongo.repo.js';
+import { CarsController } from './cars.controller.js';
 
 describe('Given ThingsController', () => {
-  const repo: CarsFileRepo = {
-    write: jest.fn(),
-    read: jest.fn(),
-    readById: jest.fn(),
+  const repo: CarsMongoRepo = {
+    create: jest.fn(),
+    query: jest.fn(),
+    queryId: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
   };
@@ -25,14 +25,14 @@ describe('Given ThingsController', () => {
   describe('when we use getAll', () => {
     test('Then it should ... if there ara NOT errors', async () => {
       await controller.getAll(req, resp, next);
-      expect(repo.read).toHaveBeenCalled();
+      expect(repo.query).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
 
     test('Then it should ... if there are errors', async () => {
-      (repo.read as jest.Mock).mockRejectedValue(new Error());
+      (repo.query as jest.Mock).mockRejectedValue(new Error());
       await controller.getAll(req, resp, next);
-      expect(repo.read).toHaveBeenCalled();
+      expect(repo.query).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
   });
@@ -40,14 +40,14 @@ describe('Given ThingsController', () => {
   describe('when we use get', () => {
     test('Then it should ... if there ara NOT errors', async () => {
       await controller.get(req, resp, next);
-      expect(repo.readById).toHaveBeenCalled();
+      expect(repo.queryId).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
 
     test('Then it should ... if there are errors', async () => {
-      (repo.readById as jest.Mock).mockRejectedValue(new Error());
+      (repo.queryId as jest.Mock).mockRejectedValue(new Error());
       await controller.get(req, resp, next);
-      expect(repo.readById).toHaveBeenCalled();
+      expect(repo.queryId).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
   });
@@ -55,14 +55,14 @@ describe('Given ThingsController', () => {
   describe('when we use post', () => {
     test('Then it should ... if there ara NOT errors', async () => {
       await controller.post(req, resp, next);
-      expect(repo.write).toHaveBeenCalled();
+      expect(repo.create).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
 
     test('Then it should ... if there are errors', async () => {
-      (repo.write as jest.Mock).mockRejectedValue(new Error());
+      (repo.create as jest.Mock).mockRejectedValue(new Error());
       await controller.post(req, resp, next);
-      expect(repo.write).toHaveBeenCalled();
+      expect(repo.create).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
   });
@@ -89,6 +89,10 @@ describe('Given ThingsController', () => {
       expect(resp.json).toHaveBeenCalled();
     });
 
-    test('Then it should ... if there are errors', () => {});
+    test('Then it should ... if there are errors', async () => {
+      (repo.update as jest.Mock).mockRejectedValue(new Error());
+      await controller.delete(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
   });
 });
