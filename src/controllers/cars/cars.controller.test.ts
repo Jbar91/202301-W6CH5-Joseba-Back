@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from 'express';
+import { Response, Request } from 'express';
 import { CarsMongoRepo } from '../../repository/cars/cars.mongo.repo.js';
 
 import { CarsController } from './cars.controller.js';
