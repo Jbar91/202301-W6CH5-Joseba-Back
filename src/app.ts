@@ -4,6 +4,7 @@ import cors from 'cors';
 import { carsRouter } from './routers/cars.router.js';
 import createDebug from 'debug';
 import { CustomError } from './interfaces/errors.js';
+import { usersRouter } from './routers/users.router.js';
 
 const debug = createDebug('CP: app');
 
@@ -19,6 +20,7 @@ app.use(cors(corsOptions));
 app.disable('x-powered-by');
 
 app.use('/cars', carsRouter);
+app.use('/user', usersRouter);
 
 app.get('/', (_req, resp) => {
   resp.json({

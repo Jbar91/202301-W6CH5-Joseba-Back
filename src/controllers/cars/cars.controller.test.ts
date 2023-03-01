@@ -1,11 +1,13 @@
 import { Response, Request, NextFunction } from 'express';
-import { CarsMongoRepo } from '../repository/cars.mongo.repo.js';
+import { CarsMongoRepo } from '../../repository/cars/cars.mongo.repo.js';
+
 import { CarsController } from './cars.controller.js';
 
 describe('Given ThingsController', () => {
   const repo: CarsMongoRepo = {
     create: jest.fn(),
     query: jest.fn(),
+    search: jest.fn(),
     queryId: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),

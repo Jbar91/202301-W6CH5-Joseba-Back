@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import createDebug from 'debug';
-import { Car } from '../entities/cars.js';
-import { Repo } from '../repository/repository.interface.js';
+import { Car } from '../../entities/cars.js';
+import { Repo } from '../../repository/repository.interface.js';
 
 const debug = createDebug('CP:controller');
 
