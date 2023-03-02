@@ -10,7 +10,7 @@ const debug = createDebug('CP:repo');
 export class CarsMongoRepo implements Repo<Car> {
   async query(): Promise<Car[]> {
     debug('query method');
-    const data = await CarsModel.find();
+    const data = await CarsModel.find().populate('owner');
     return data;
   }
   async queryId(id: string): Promise<Car> {
@@ -26,7 +26,7 @@ export class CarsMongoRepo implements Repo<Car> {
   }
   async create(info: Partial<Car>): Promise<Car> {
     debug('create method');
-    const data = await CarsModel.create(info);
+    const data = await (await CarsModel.create(info)).populate('owner');
     return data;
   }
   async update(info: Partial<Car>): Promise<Car> {

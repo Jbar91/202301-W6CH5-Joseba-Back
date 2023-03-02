@@ -1,10 +1,20 @@
 import { Response, Request } from 'express';
 import { CarsMongoRepo } from '../../repository/cars/cars.mongo.repo.js';
+import { UsersMongoRepo } from '../../repository/users/users.mongo.repo.js';
 
 import { CarsController } from './cars.controller.js';
 
 describe('Given ThingsController', () => {
   const repo: CarsMongoRepo = {
+    create: jest.fn(),
+    query: jest.fn(),
+    search: jest.fn(),
+    queryId: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  };
+
+  const usersRepo: UsersMongoRepo = {
     create: jest.fn(),
     query: jest.fn(),
     search: jest.fn(),
@@ -22,7 +32,7 @@ describe('Given ThingsController', () => {
   } as unknown as Response;
   const next = jest.fn();
 
-  const controller = new CarsController(repo);
+  const controller = new CarsController(repo, usersRepo);
 
   describe('when we use getAll', () => {
     test('Then it should ... if there ara NOT errors', async () => {

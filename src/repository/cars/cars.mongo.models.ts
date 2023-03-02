@@ -14,6 +14,10 @@ const carSchema = new Schema<Car>({
     type: String,
     required: true,
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 carSchema.set('toJSON', {
