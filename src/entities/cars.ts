@@ -7,10 +7,3 @@ export type Car = {
   color: string;
   owner: User;
 };
-
-/** Relaciones entre colleciones
- *
- * 1 - n  User -> n // Cosa -> 1
- * n - m  User -> n // Cosa -> n
- *
- */
