@@ -49,7 +49,7 @@ export class CarsController {
       const data = await this.repo.create(req.body);
 
       user.cars.push(data);
-      this.usersRepo.update(user);
+      await this.usersRepo.update(user);
 
       resp.json({
         results: [data],
@@ -73,6 +73,7 @@ export class CarsController {
     try {
       debug('delete');
       const id = req.params.id;
+      if (!id) throw new HTTPError(404, 'Not found', 'User id not found');
       const data = await this.repo.delete(id);
       resp.json({
         results: [data],
