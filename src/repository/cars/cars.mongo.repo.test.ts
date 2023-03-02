@@ -11,13 +11,17 @@ describe('Given CarMongoRepo', () => {
     });
   });
 
-  describe('When query is called', () => {
-    test('Then should return the data', async () => {
-      (CarsModel.find as jest.Mock).mockResolvedValue([]);
+  describe('When i use query', () => {
+    test('Then should return the datas', async () => {
+      const mockData = [{ chars: 'test' }];
+      (CarsModel.find as jest.Mock).mockImplementation(() => ({
+        populate: jest.fn().mockReturnValue(mockData),
+      }));
+
       const result = await repo.query();
 
       expect(CarsModel.find).toHaveBeenCalled();
-      expect(result).toEqual([]);
+      expect(result).toEqual(mockData);
     });
   });
 
@@ -54,18 +58,15 @@ describe('Given CarMongoRepo', () => {
 
   describe('When create is called', () => {
     test('Then it should return an object if we give a valid id', async () => {
-      (CarsModel.create as jest.Mock).mockResolvedValue({
-        brand: ' some',
-        model: 'qlq',
-        color: 'red',
-      });
-      const newCar = {
-        brand: ' some',
-        model: 'qlq',
-        color: 'red',
-      };
-      const result = await repo.create(newCar);
-      expect(result).toStrictEqual(newCar);
+      const mockData = { brand: 'toyota', modelCar: 'Yaris', color: 'black' };
+      (CarsModel.create as jest.Mock).mockImplementation(() => ({
+        populate: jest.fn().mockReturnValue(mockData),
+      }));
+
+      const result = await repo.create(mockData);
+
+      expect(CarsModel.findById).toHaveBeenCalled();
+      expect(result).toEqual(mockData);
     });
   });
 

@@ -26,7 +26,7 @@ export class CarsMongoRepo implements Repo<Car> {
   }
   async create(info: Partial<Car>): Promise<Car> {
     debug('create method');
-    const data = await (await CarsModel.create(info)).populate('owner');
+    const data = (await CarsModel.create(info)).populate('owner');
     return data;
   }
   async update(info: Partial<Car>): Promise<Car> {
