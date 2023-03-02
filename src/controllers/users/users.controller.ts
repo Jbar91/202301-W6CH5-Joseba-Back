@@ -19,6 +19,7 @@ export class UsersController {
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(403, 'Unauthorized', 'Invalid email or passwd');
       req.body.passwd = await Auth.hash(req.body.passwd);
+      req.body.cars = [];
       const data = await this.repo.create(req.body);
       resp.status(201);
       resp.json({
@@ -46,7 +47,11 @@ export class UsersController {
       if (!(await Auth.compare(req.body.passwd, data[0].passwd)))
         throw new HTTPError(401, 'Unauthorized', "Password doesn't match");
 
-      const payload: TokenPayload = { email: req.body.email, role: 'admin' };
+      const payload: TokenPayload = {
+        email: req.body.email,
+        role: 'admin',
+        id: data[0].id,
+      };
 
       const token = Auth.createJWT(payload);
       resp.json({

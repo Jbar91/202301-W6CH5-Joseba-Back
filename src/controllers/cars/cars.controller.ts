@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import createDebug from 'debug';
 import { Car } from '../../entities/cars.js';
 import { Repo } from '../../repository/repository.interface.js';
+import { RequestCool } from '../../interceptors/authentication.js';
+import { User } from '../../entities/user.js';
+import { HTTPError } from '../../interfaces/errors.js';
 
 const debug = createDebug('CP:controller');
 
 export class CarsController {
-  constructor(public repo: Repo<Car>) {
-    this.repo = repo;
+  constructor(public repo: Repo<Car>, public usersRepo: Repo<User>) {
     debug('Instantiated');
   }
   async getAll(req: Request, resp: Response, next: NextFunction) {
@@ -33,10 +35,22 @@ export class CarsController {
       next(error);
     }
   }
-  async post(req: Request, resp: Response, next: NextFunction) {
+  async post(req: RequestCool, resp: Response, next: NextFunction) {
     try {
       debug('post method');
+      // Add car owner
+      const userId = req.info?.id;
+
+      if (!userId) throw new HTTPError(404, 'Not found', 'User id not found');
+
+      const user = await this.usersRepo.queryId(userId);
+      req.body.owner = userId;
+
       const data = await this.repo.create(req.body);
+
+      user.cars.push(data);
+      this.usersRepo.update(user);
+
       resp.json({
         results: [data],
       });

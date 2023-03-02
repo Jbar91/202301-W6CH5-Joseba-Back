@@ -11,6 +11,12 @@ const userSchema = new Schema<User>({
     type: String,
     required: true,
   },
+  cars: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Car',
+    },
+  ],
 });
 
 userSchema.set('toJSON', {
